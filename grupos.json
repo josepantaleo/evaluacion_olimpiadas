@@ -1,0 +1,57 @@
+[
+  {
+    "id": "grupo-a",
+    "escuela": "Escuela",
+    "nombre": "",
+    "integrantes": [
+      "xx",
+      "yy",
+      "zz"
+    ],
+    "grado": "xx Año x xx Secundaria A"
+  },
+  {
+    "id": "grupo-b",
+    "escuela": "Escuela",
+    "nombre": "",
+    "integrantes": [
+      "xx",
+      "yy",
+      "zz"
+    ],
+    "grado": "xx Año x xx Secundaria B"
+  },
+  {
+    "id": "masters",
+    "nombre": "masters",
+    "escuela": "IPEM146",
+    "integrantes": [
+      "JUAN",
+      "LORENA",
+      "PEDRO"
+    ],
+    "grado": "3ERO A TT"
+  },
+  {
+    "id": "grupo-1754797847896",
+    "nombre": "Sin Nombre",
+    "escuela": "IPEM 146",
+    "integrantes": [
+      "MARIA",
+      "LAURA",
+      "JULIO"
+    ],
+    "grado": "1ERO B TT"
+  },
+  {
+    "id": "grupo-1754798008856",
+    "nombre": "",
+    "escuela": "IPEM 260",
+    "integrantes": [
+      "MARIO",
+      "CARLOS",
+      "ROSA"
+    ],
+    "grado": "3ERO A TT"
+  }
+]

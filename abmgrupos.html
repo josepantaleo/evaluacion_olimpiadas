@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Grupos de Proyectos</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #007bff;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-bg-color: #f7fbff;
+            --info-border-color: #d0e8ff;
+            --neutral-bg-color: #fcfcfc;
+            --neutral-border-color: #e0e0e0;
+            --container-bg-color: #fff;
+            --main-bg-color: #eef2f7;
+            --text-color: #333;
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-inset: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- Estilos Generales --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: var(--container-bg-color);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* --- Encabezados --- */
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        h2 {
+            font-size: 1.8em;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--neutral-border-color);
+            margin-top: 40px;
+        }
+
+        /* --- Secciones de Formulario --- */
+        .form-section {
+            display: grid;
+            gap: 18px;
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 1px solid var(--neutral-border-color);
+            border-radius: 8px;
+            background-color: var(--neutral-bg-color);
+            box-shadow: var(--shadow-inset);
+        }
+        .form-group {
+            margin-bottom: 0;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #444;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        /* --- Botones --- */
+        button, .btn {
+            background-color: var(--success-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        button:hover, .btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        button.delete-btn, .btn-delete {
+            background-color: var(--danger-color);
+        }
+        button.delete-btn:hover, .btn-delete:hover {
+            background-color: #c82333;
+        }
+        button.edit-btn, .btn-edit {
+            background-color: var(--warning-color);
+            color: var(--text-color);
+        }
+        button.edit-btn:hover, .btn-edit:hover {
+            background-color: #e0a800;
+        }
+        button.secondary-btn, .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        button.secondary-btn:hover, .btn-secondary:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Lista de Grupos --- */
+        #groupListContainer {
+            margin-top: 30px;
+            border-top: 1px solid var(--neutral-border-color);
+            padding-top: 20px;
+        }
+        .group-card {
+            background-color: var(--info-bg-color);
+            border: 1px solid var(--info-border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            flex-direction: column;
+        }
+        .group-details {
+            flex: 1;
+            margin-right: 0;
+        }
+        .group-card p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+        .group-card p strong {
+            color: var(--primary-color);
+        }
+        .group-card .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .group-card .card-actions button {
+            padding: 8px 12px;
+            font-size: 0.85em;
+            margin-top: 0;
+            flex: 1;
+        }
+
+        /* --- Notificaciones y descargas --- */
+        #notification-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            z-index: 1000;
+            font-size: 1.1em;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            min-width: 250px;
+            text-align: center;
+        }
+        #notification-bar.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #notification-bar.success { background-color: var(--success-color); }
+        #notification-bar.error { background-color: var(--danger-color); }
+        #notification-bar.info { background-color: var(--secondary-color); }
+        
+        .download-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--neutral-border-color);
+        }
+        .download-section button {
+            margin: 5px;
+        }
+        #currentId {
+            font-style: italic;
+            color: #666;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .form-section {
+                padding: 15px;
+            }
+            .group-card {
+                padding: 15px;
+            }
+            .group-card .card-actions {
+                flex-direction: row;
+                gap: 5px;
+            }
+            #notification-bar {
+                width: 90%;
+                bottom: 10px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Administrar Grupos de Proyectos</h1>
+
+        <div id="notification-bar"></div>
+
+        <section class="form-section">
+            <h2>Agregar/Editar Grupo</h2>
+            <form id="groupForm">
+                <input type="hidden" id="groupId" value="">
+                
+                <div class="form-group">
+                    <label for="groupName">Nombre del Grupo:</label>
+                    <input type="text" id="groupName" placeholder="Ej: Los Innovadores">
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupSchool">Escuela:</label>
+                    <input type="text" id="groupSchool" placeholder="Ej: IPEM 146" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupGrade">Grado/Curso:</label>
+                    <input type="text" id="groupGrade" placeholder="Ej: 3ER Año A TM Secundaria" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupMembers">Integrantes (separados por coma):</label>
+                    <textarea id="groupMembers" rows="3" placeholder="Ej: Juan Pérez, Ana Gómez, Luis Rodríguez" required></textarea>
+                </div>
+
+                <p><strong>ID del Grupo:</strong> <span id="currentId">Se generará automáticamente o se mostrará para edición.</span></p>
+                
+                <div>
+                    <button type="submit">Guardar Grupo</button>
+                    <button type="button" id="cancelEditBtn" class="secondary-btn" style="display:none;">Cancelar Edición</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="groupListContainer">
+            <h2>Grupos Actuales</h2>
+            <div id="groupList">
+                <p>Cargando grupos...</p>
+            </div>
+        </section>
+
+        <section class="download-section">
+            <h2>Exportar Datos de Grupos</h2>
+            <button id="downloadJsonBtn" class="secondary-btn">Descargar grupos.json</button>
+            <p><small>Después de descargar, reemplaza manualmente el archivo `grupos.json` existente en tu servidor.</small></p>
+        </section>
+    </div>
+
+    <script>
+        let groupsData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGroups();
+            setupEventListeners();
+        });
+
+        async function loadGroups() {
+            const groupListDiv = document.getElementById('groupList');
+            groupListDiv.innerHTML = '<p>Cargando grupos...</p>';
+
+            try {
+                const response = await fetch('grupos.json');
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        groupsData = [];
+                        showNotification('Archivo grupos.json no encontrado. Iniciando con una lista vacía.', 'info');
+                    } else {
+                        throw new Error(`Error HTTP: ${response.status}`);
+                    }
+                } else {
+                    const data = await response.json();
+                    groupsData = Array.isArray(data) ? data : [];
+                }
+            } catch (error) {
+                console.error('Error al cargar grupos:', error);
+                showNotification(`Error al cargar grupos: ${error.message}`, 'error');
+                groupsData = [];
+            }
+            renderGroupList();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('groupForm').addEventListener('submit', handleFormSubmit);
+            document.getElementById('cancelEditBtn').addEventListener('click', clearForm);
+            document.getElementById('downloadJsonBtn').addEventListener('click', downloadGroupsJson);
+        }
+
+        function generateUniqueId(name) {
+            const baseId = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            let uniqueId = baseId;
+            let counter = 1;
+            while (groupsData.some(g => g.id === uniqueId)) {
+                uniqueId = `${baseId}-${counter}`;
+                counter++;
+            }
+            return uniqueId;
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('groupId').value;
+            const name = document.getElementById('groupName').value.trim();
+            const school = document.getElementById('groupSchool').value.trim();
+            const grade = document.getElementById('groupGrade').value.trim();
+            const members = document.getElementById('groupMembers').value.split(',').map(m => m.trim()).filter(m => m !== '');
+
+            if (!school || !grade || members.length === 0) {
+                showNotification('Los campos "Escuela", "Grado" e "Integrantes" son obligatorios.', 'error');
+                return;
+            }
+
+            const newGroup = {
+                id: id || (name ? generateUniqueId(name) : `grupo-${Date.now()}`),
+                nombre: name || "",
+                escuela: school,
+                integrantes: members,
+                grado: grade
+            };
+
+            if (id) {
+                const index = groupsData.findIndex(g => g.id === id);
+                if (index !== -1) {
+                    groupsData[index] = newGroup;
+                    showNotification('Grupo actualizado correctamente.', 'success');
+                } else {
+                    showNotification('Error: Grupo no encontrado para actualizar.', 'error');
+                }
+            } else {
+                groupsData.push(newGroup);
+                showNotification('Grupo añadido correctamente.', 'success');
+            }
+
+            renderGroupList();
+            clearForm();
+        }
+
+        function renderGroupList() {
+            const groupListDiv = document.getElementById('groupList');
+            groupListDiv.innerHTML = '';
+
+            if (groupsData.length === 0) {
+                groupListDiv.innerHTML = '<p>No hay grupos cargados. ¡Añade uno!</p>';
+                return;
+            }
+
+            groupsData.forEach(group => {
+                const card = document.createElement('div');
+                card.className = 'group-card';
+                card.innerHTML = `
+                    <div class="group-details">
+                        <p><strong>ID:</strong> <span id="groupCardId-${group.id}">${group.id}</span></p>
+                        <p><strong>Nombre:</strong> ${group.nombre}</p>
+                        <p><strong>Escuela:</strong> ${group.escuela}</p>
+                        <p><strong>Grado:</strong> ${group.grado}</p>
+                        <p><strong>Integrantes:</strong> ${group.integrantes.join(', ')}</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="edit-btn" onclick="editGroup('${group.id}')">Editar</button>
+                        <button class="delete-btn" onclick="deleteGroup('${group.id}')">Eliminar</button>
+                    </div>
+                `;
+                groupListDiv.appendChild(card);
+            });
+        }
+
+        function editGroup(id) {
+            const groupToEdit = groupsData.find(g => g.id === id);
+            if (groupToEdit) {
+                document.getElementById('groupId').value = groupToEdit.id;
+                document.getElementById('groupName').value = groupToEdit.nombre === "Sin Nombre" ? "" : groupToEdit.nombre;
+                document.getElementById('groupSchool').value = groupToEdit.escuela;
+                document.getElementById('groupGrade').value = groupToEdit.grado;
+                document.getElementById('groupMembers').value = groupToEdit.integrantes.join(', ');
+                
+                document.getElementById('currentId').textContent = groupToEdit.id;
+                document.getElementById('cancelEditBtn').style.display = 'inline-block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showNotification('Grupo no encontrado para editar.', 'error');
+            }
+        }
+
+        function deleteGroup(id) {
+            if (confirm(`¿Estás seguro de que quieres eliminar el grupo con ID "${id}"?`)) {
+                groupsData = groupsData.filter(group => group.id !== id);
+                showNotification('Grupo eliminado correctamente.', 'success');
+                renderGroupList();
+                clearForm();
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('groupForm').reset();
+            document.getElementById('groupId').value = '';
+            document.getElementById('currentId').textContent = 'Se generará automáticamente o se mostrará para edición.';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
+        function downloadGroupsJson() {
+            const jsonString = JSON.stringify(groupsData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'grupos.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification('Archivo grupos.json descargado. ¡No olvides reemplazar el archivo original!', 'success');
+        }
+
+        function showNotification(message, type) {
+            const barra = document.getElementById('notification-bar');
+            barra.textContent = message;
+            barra.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                barra.className = `notification ${type}`;
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+/* --- Variables CSS --- */
+:root {
+    --primary-color: #034881;
+    --accent-color: #007bff;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --light-bg: #f4f4f4;
+    --white: #ffffff;
+    --text-color: #333;
+    --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --border-color-light: #ddd;
+    --bg-light-form: #f9f9f9;
+    --bg-card-info: #e9f7ff;
+    --border-card-info: #b3e0ff;
+    --text-color-dark: #343a40;
+    --bg-table-even: #e9ecef;
+    --bg-table-hover: #cfd8dc;
+}
+
+/* --- Estilos Generales --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+}
+
+/* --- Encabezados y Títulos --- */
+h1, h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#clasificacionResultados h2 {
+    color: var(--accent-color);
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+/* --- Formularios y Elementos de Entrada --- */
+form {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 5px;
+    background-color: var(--bg-light-form);
+}
+
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Consolidado de inputs */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    box-sizing: border-box;
+    transition: border 0.2s ease, background-color 0.3s ease; /* Transición para el color de fondo */
+    font-size: 16px;
+    text-align: justify;
+    font-weight: bold;
+    color: var(--text-color); /* Aseguramos que el color del texto sea siempre legible */
+    background-color: var(--white);
+}
+
+/* Estilo específico para input de número */
+input[type="number"] {
+    width: 10%;
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 5px 5px 10px rgba(24, 25, 25, 0.25);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* --- Lógica de colores para el input de puntaje --- */
+/* Estilo por defecto para el input de número (por si no tiene valor o es inválido) */
+input[type="number"] {
+    background-color: #f0f0f0; /* Color neutro de inicio */
+}
+
+/* Puntaje entre 0 y 10 (válido) */
+input[type="number"]:valid {
+    background-color: #d4edda; /* Un verde claro para indicar "correcto" */
+    border-color: var(--success-color);
+}
+
+/* Puntaje mayor a 10 (inválido por el atributo max) */
+input[type="number"]:invalid {
+    background-color: #f8d7da; /* Un rojo claro para indicar "incorrecto" */
+    border-color: var(--danger-color);
+}
+/* Aseguramos que el `:invalid` solo aplique para valores mayores a 10, no para campos vacíos */
+input[type="number"]:invalid:not(:placeholder-shown) {
+    background-color: #f8d7da;
+    border-color: var(--danger-color);
+}
+
+
+/* --- Botones Generales --- */
+button {
+    background-color: var(--success-color);
+    color: var(--white);
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+button:focus {
+    outline: 2px solid var(--accent-color);
+}
+
+/* --- Secciones de Contenido (Evaluaciones) --- */
+#datosGuardados {
+    margin-top: 30px;
+    border-top: 2px solid #eee;
+    padding-top: 20px;
+}
+
+.evaluacion-card {
+    background-color:none;
+    border: 1px solid var(--border-card-info);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    break-inside: avoid;
+}
+
+.evaluacion-card p {
+    margin: 5px 0;
+}
+
+.evaluacion-card p strong {
+    color: var(--primary-color);
+}
+
+.observaciones-crit {
+    background-color: var(--white);
+    border-left: 3px solid var(--accent-color);
+    padding: 10px;
+    margin: 10px 0 5px;
+    font-style: italic;
+}
+
+.mencion-especial-display {
+    background-color: #fff3cd;
+    border-left: 3px solid var(--warning-color);
+    padding: 10px;
+    font-weight: bold;
+    color: #856404;
+}
+
+#grupoInfo {
+    background-color: #e6f7e9;
+    border: 1px solid #a8e6b9;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0 15px;
+    display: none;
+}
+
+#grupoInfo p {
+    margin: 3px 0;
+}
+
+/* --- Botones en Tarjetas de Evaluación --- */
+.action-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.edit-btn,
+.delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: var(--danger-color);
+    color: var(--white);
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* --- Sección de Clasificación de Proyectos --- */
+#clasificacionProyectosContainer {
+    background-color: var(--light-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+#clasificacionProyectosContainer h2 {
+    color: var(--text-color-dark);
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+#clasificacionProyectos {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+}
+
+#clasificacionProyectos thead th {
+    background-color: var(--accent-color);
+    color: var(--white);
+    font-weight: bold;
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+}
+
+#clasificacionProyectos tbody td {
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+#clasificacionProyectos tbody tr:nth-child(even) {
+    background-color: var(--bg-table-even);
+}
+
+#clasificacionProyectos tbody tr:hover {
+    background-color: var(--bg-table-hover);
+    transition: background-color 0.3s ease;
+}
+
+#clasificacionProyectos .btn {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#clasificacionProyectos .btn-editar {
+    background-color: var(--warning-color);
+    color: #212529;
+}
+
+#clasificacionProyectos .btn-editar:hover {
+    background-color: #e0a800;
+}
+
+#clasificacionProyectos .btn-eliminar {
+    background-color: var(--danger-color);
+    color: var(--white);
+}
+
+#clasificacionProyectos .btn-eliminar:hover {
+    background-color: #c82333;
+}
+
+/* --- Resultados y Notificaciones --- */
+#clasificacionResultados {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+    font-size: 30px;
+}
+
+#puestosContainer p {
+    background-color: var(--white);
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border: 1px solid #f0f0f0;
+}
+
+#notification-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: var(--white);
+    padding: 12px 25px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+    font-size: 1.1em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#notification-bar.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#notification-bar.success { background-color: var(--success-color); }
+#notification-bar.error { background-color: var(--danger-color); }
+#notification-bar.info { background-color: var(--info-color); }
+
+/* --- Exportación --- */
+.export-section {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.export-section button {
+    background-color: var(--accent-color);
+}
+
+.export-section button:hover {
+    background-color: var(--primary-color);
+}
+
+#exportarResultadosPdfBtn {
+    background-color: var(--success-color);
+}
+
+#exportarResultadosPdfBtn:hover {
+    background-color: #45a049;
+}
+
+#exportarHistorialPdfBtn {
+    background-color: var(--danger-color);
+}
+
+#exportarHistorialPdfBtn:hover {
+    background-color: #da190b;
+}
+
+/* --- Fieldsets --- */
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fcfcfc;
+}
+
+legend {
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 0 10px;
+    font-size: 1.2em;
+}
+
+/* --- Menú de Navegación Rápida --- */
+#quick-nav {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #607171;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 5px 5px 8px rgba(84, 84, 84, 0.2);
+    z-index: 1000;
+}
+
+#quick-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+#quick-nav ul li {
+    margin-bottom: 2px;
+}
+
+#quick-nav ul li:last-child {
+    margin-bottom: 0;
+}
+
+#quick-nav ul li a {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.95em;
+    font-weight: 500;
+    padding: 5px 0;
+    display: block;
+    transition: color 0.2s ease-in-out;
+}
+
+#quick-nav ul li a:hover {
+    color: yellow;
+    
+}
+
+/* --- Clases utilitarias --- */
+.input-with-button {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.btn-placeholder-to-value {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.input-error {
+    border-color: var(--danger-color);
+    border-width: 2px;
+    border-style: solid;
+}
+
+/* --- Smooth Scroll --- */
+html {
+    scroll-behavior: smooth;
+}
+
+.clasificacion-container li {
+    background-color: #f7fbff;
+    border: 1px solid #d0e8ff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre el puesto y la información */
+}
+
+.clasificacion-container .puesto {
+    /* Aquí es donde se aplican los estilos para el puesto */
+    font-size: 0.8em; /* Aumenta el tamaño de la fuente */
+    font-weight: bold; /* Pone el texto en negrita */
+    color: #0056b3; /* Un color de acento, como el azul de los encabezados */
+    background-color: #e6f2ff; /* Un fondo sutil para destacarlo */
+    padding: 5px 12px; /* Espaciado interno para que no esté pegado */
+    border-radius: 6px; /* Bordes redondeados */
+    min-width: 40px; /* Ancho mínimo para que se vea bien en varios dígitos */
+    text-align: center; /* Centra el número */
+    border: 1px solid #cce0ff; /* Un borde sutil para enmarcarlo */
+}
+
+.clasificacion-container .info-clasificacion {
+    flex-grow: 1; /* Permite que esta sección ocupe el espacio restante */
+}
+
+.clasificacion-container .puntaje-total {
+    font-weight: bold;
+    color: #28a745; /* Un color para el puntaje total */
+    margin-left: 10px;
+}
+/* --- Estilos específicos para la generación de PDF --- */
+/* Esta sección es crucial para controlar la apariencia del documento final */
+
+/* El siguiente estilo se aplica al contenedor temporal que html2canvas renderiza */
+.pdf-content-wrapper {
+    width: 210mm; /* Ancho de una hoja A4 */
+    padding: 15mm; /* Márgenes de 15mm en todos los lados */
+    box-sizing: border-box; /* Asegura que el padding no desborde el ancho */
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+    font-size: 10pt;
+}
+
+/* Estilos para los elementos dentro del PDF */
+.pdf-content-wrapper .pdf-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.pdf-content-wrapper .pdf-header h2 {
+    color: #034881;
+    margin: 0;
+    font-size: 16pt;
+}
+
+.pdf-content-wrapper .proyecto-info {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.pdf-content-wrapper .seccion-puntaje {
+    margin-bottom: 15px;
+}
+
+.pdf-content-wrapper .total-final {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 20px;
+    color: #28a745;
+}
+.evaluacion-card .escuela-display {
+    font-size: 1.4em; /* O el tamaño que prefieras, por ejemplo, 18px */
+    font-weight: bold;
+    color: #004d40; /* Un color distinto para resaltarlo, como verde oscuro */
+    text-align: center;
+}
+
+.evaluacion-card .total-score {
+    font-size: 1.5em; /* Un tamaño más grande para el total */
+    font-weight: 900; /* Negrita extra */
+    color: #c62828; /* Un color llamativo, como rojo */
+    text-align: right;
+    margin-top: 10px;
+}
+
+.evaluacion-card .obs-general-display {
+    font-size: 1.2em; /* Un tamaño más grande para el total */
+    font-weight: 700; /* Negrita extra */
+    color: #080808; /* Un color llamativo, como rojo */
+    text-align: justify;
+    margin-top: 10px;
+}
