@@ -556,11 +556,14 @@ function mostrarEvaluaciones() {
         document.getElementById('limpiarDatos').style.display = 'none';
         document.getElementById('exportarJsonBtn').style.display = 'none';
         document.getElementById('exportarPdfBtn').style.display = 'none';
+        document.getElementById('exportarPdfBtn1').style.display = 'none';
+      
         return;
     }
     document.getElementById('limpiarDatos').style.display = 'inline-block';
     document.getElementById('exportarJsonBtn').style.display = 'inline-block';
     document.getElementById('exportarPdfBtn').style.display = 'inline-block';
+    document.getElementById('exportarPdfBtn1').style.display = 'inline-block';
 
     evaluaciones.forEach((ev, idx) => {
         const evaluadoresDisplay = [];
